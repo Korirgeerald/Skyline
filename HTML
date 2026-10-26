@@ -1,0 +1,888 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skyline | Member Dashboard</title>
+
+<style>
+:root {
+  --navy: #111a35;
+  --blue: #4966f5;
+  --purple: #8065ef;
+  --green: #13b981;
+  --bg: #f4f6fb;
+  --text: #202943;
+  --muted: #8490a7;
+  --border: #e7eaf2;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Inter, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+button, input, select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+  width: 245px;
+  background: var(--navy);
+  color: white;
+  padding: 27px 17px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.logo {
+  font-size: 25px;
+  font-weight: 800;
+  padding: 0 13px 36px;
+  letter-spacing: -1px;
+}
+
+.logo span {
+  color: #8e9dff;
+}
+
+.menu-label {
+  font-size: 10px;
+  color: #7f8aa8;
+  font-weight: bold;
+  letter-spacing: 2px;
+  padding: 0 13px;
+  margin: 18px 0 12px;
+}
+
+.menu a {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 13px;
+  margin: 4px 0;
+  text-decoration: none;
+  color: #aab4cf;
+  border-radius: 10px;
+  font-size: 14px;
+  transition: .2s;
+}
+
+.menu a:hover,
+.menu a.active {
+  color: white;
+  background: #2b365b;
+}
+
+.menu a.active {
+  box-shadow: inset 3px 0 #8794ff;
+}
+
+.menu-icon {
+  width: 21px;
+  text-align: center;
+  font-size: 17px;
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+  padding: 18px 12px 0;
+  border-top: 1px solid #303954;
+  font-size: 12px;
+  color: #9ba7c2;
+}
+
+.sidebar-bottom strong {
+  display: block;
+  color: white;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+/* MAIN AREA */
+
+.main {
+  flex: 1;
+  min-width: 0;
+}
+
+.topbar {
+  background: white;
+  padding: 19px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  gap: 16px;
+}
+
+.search {
+  width: min(350px, 45%);
+  padding: 11px 15px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #f9faff;
+  outline-color: var(--blue);
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  background: #e7eaff;
+  color: var(--blue);
+  border-radius: 13px;
+  font-size: 17px;
+}
+
+.content {
+  max-width: 1500px;
+  margin: auto;
+  padding: 32px;
+}
+
+.welcome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 28px;
+}
+
+.welcome h1 {
+  font-size: 27px;
+  margin-bottom: 8px;
+}
+
+.welcome p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.date-tag {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 11px 14px;
+  color: #65718b;
+  font-size: 12px;
+}
+
+/* SUMMARY CARDS */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 17px;
+  margin-bottom: 25px;
+}
+
+.stat-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 21px;
+}
+
+.stat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: #78849c;
+  font-size: 12px;
+}
+
+.stat-symbol {
+  width: 37px;
+  height: 37px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  background: #edf0ff;
+  color: var(--blue);
+  font-size: 19px;
+}
+
+.stat-card:nth-child(2) .stat-symbol {
+  background: #e4f9f0;
+  color: var(--green);
+}
+
+.stat-card:nth-child(3) .stat-symbol {
+  background: #f0eaff;
+  color: var(--purple);
+}
+
+.stat-card:nth-child(4) .stat-symbol {
+  background: #fff1df;
+  color: #e99b30;
+}
+
+.stat-card h2 {
+  font-size: 27px;
+  margin: 18px 0 8px;
+}
+
+.stat-card small {
+  color: #929cb0;
+  font-size: 11px;
+}
+
+/* DASHBOARD COLUMNS */
+
+.columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(280px, 1fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.panel {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 23px;
+  margin-bottom: 22px;
+  min-width: 0;
+}
+
+.panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.panel-heading h2 {
+  font-size: 16px;
+}
+
+.panel-heading a {
+  color: var(--blue);
+  text-decoration: none;
+  font-size: 12px;
+}
+
+.referral-box {
+  background: linear-gradient(120deg, #182447, #394a88);
+  color: white;
+  border-radius: 14px;
+  padding: 23px;
+  margin-bottom: 20px;
+}
+
+.referral-box p {
+  color: #d0d8f4;
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+
+.referral-box h2 {
+  font-size: 23px;
+  margin-bottom: 18px;
+}
+
+.referral-link {
+  display: flex;
+  gap: 8px;
+}
+
+.referral-link input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  border-radius: 8px;
+  padding: 11px;
+  font-size: 12px;
+  background: white;
+}
+
+.btn {
+  border: 0;
+  border-radius: 8px;
+  padding: 11px 14px;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.btn-blue {
+  background: var(--blue);
+  color: white;
+}
+
+.btn-white {
+  background: white;
+  color: #26345a;
+}
+
+.referral-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.info-box {
+  background: #f7f8fc;
+  padding: 17px;
+  border-radius: 11px;
+}
+
+.info-box span {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 9px;
+}
+
+.info-box strong {
+  font-size: 19px;
+}
+
+/* TASKS AND TRANSACTIONS */
+
+.task {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 14px 0;
+  border-bottom: 1px solid #eff1f6;
+}
+
+.task:last-child {
+  border-bottom: 0;
+}
+
+.task-icon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: #edf0ff;
+  color: var(--blue);
+  flex-shrink: 0;
+  font-size: 18px;
+}
+
+.task-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.task-details strong {
+  font-size: 13px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.task-details small {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.reward {
+  color: var(--green);
+  font-size: 12px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.empty {
+  text-align: center;
+  padding: 25px 10px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.empty strong {
+  color: var(--text);
+  display: block;
+  margin-bottom: 5px;
+}
+
+.wallet-balance {
+  background: #f3f5ff;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.wallet-balance span {
+  display: block;
+  color: #76819c;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.wallet-balance h2 {
+  font-size: 29px;
+  margin-bottom: 17px;
+}
+
+.wallet-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.wallet-actions button {
+  flex: 1;
+}
+
+.form {
+  display: grid;
+  gap: 11px;
+}
+
+.form label {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.form input,
+.form select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: white;
+  outline-color: var(--blue);
+}
+
+.status {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin-top: 12px;
+  overflow-wrap: anywhere;
+}
+
+footer {
+  padding: 10px 32px 25px;
+  color: #929bb0;
+  font-size: 11px;
+}
+
+/* MOBILE */
+
+@media (max-width: 1100px) {
+  .sidebar {
+    width: 205px;
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .layout {
+    display: block;
+  }
+
+  .sidebar {
+    width: 100%;
+    padding: 16px;
+  }
+
+  .logo {
+    padding: 0 8px 15px;
+  }
+
+  .menu-label,
+  .sidebar-bottom {
+    display: none;
+  }
+
+  .menu {
+    display: flex;
+    overflow-x: auto;
+    gap: 5px;
+  }
+
+  .menu a {
+    white-space: nowrap;
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  .topbar {
+    padding: 14px;
+  }
+
+  .search {
+    width: 55%;
+  }
+
+  .profile span:last-child {
+    display: none;
+  }
+
+  .content {
+    padding: 20px 13px;
+  }
+
+  .welcome {
+    align-items: flex-start;
+  }
+
+  .welcome h1 {
+    font-size: 23px;
+  }
+
+  .date-tag {
+    display: none;
+  }
+
+  .stats {
+    gap: 10px;
+  }
+
+  .stat-card {
+    padding: 15px;
+  }
+
+  .stat-card h2 {
+    font-size: 23px;
+  }
+
+  .stat-top {
+    font-size: 11px;
+  }
+
+  .panel {
+    padding: 17px;
+  }
+
+  .referral-link {
+    flex-direction: column;
+  }
+
+  .referral-link button {
+    align-self: flex-start;
+  }
+
+  footer {
+    padding: 10px 15px 22px;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="logo">Sky<span>line.</span></div>
+
+    <div class="menu-label">WORKSPACE</div>
+    <nav class="menu">
+      <a href="#overview" class="active"><span class="menu-icon">▦</span> Overview</a>
+      <a href="#tasks"><span class="menu-icon">▤</span> Browse Tasks</a>
+      <a href="#myreviews"><span class="menu-icon">☆</span> My Reviews</a>
+    </nav>
+
+    <div class="menu-label">MY ACCOUNT</div>
+    <nav class="menu">
+      <a href="#referrals"><span class="menu-icon">♧</span> Referrals</a>
+      <a href="#wallet"><span class="menu-icon">▣</span> My Wallet</a>
+      <a href="#transactions"><span class="menu-icon">↔</span> Transactions</a>
+    </nav>
+
+    <div class="menu-label">SUPPORT</div>
+    <nav class="menu">
+      <a href="#help"><span class="menu-icon">?</span> Help Centre</a>
+      <a href="#settings"><span class="menu-icon">⚙</span> Settings</a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <strong>Skyline Member</strong>
+      Member dashboard
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <input class="search" type="search" id="search"
+        placeholder="Search dashboard..." aria-label="Search dashboard">
+
+      <div class="profile">
+        <div class="avatar">S</div>
+        <span>Skyline Member</span>
+      </div>
+    </header>
+
+    <main class="content" id="overview">
+      <section class="welcome">
+        <div>
+          <h1>Welcome to Skyline 👋</h1>
+          <p>Manage your reviews, referrals and account activity in one place.</p>
+        </div>
+        <div class="date-tag" id="today"></div>
+      </section>
+
+      <section class="stats">
+        <article class="stat-card">
+          <div class="stat-top">Available Balance <span class="stat-symbol">▣</span></div>
+          <h2 id="balance">KES 0.00</h2>
+          <small>Your current wallet balance</small>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-top">Completed Reviews <span class="stat-symbol">✓</span></div>
+          <h2 id="reviewCount">0</h2>
+          <small>Approved submissions</small>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-top">My Referrals <span class="stat-symbol">♧</span></div>
+          <h2 id="referralCount">0</h2>
+          <small>Members invited by you</small>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-top">Total Commission <span class="stat-symbol">↗</span></div>
+          <h2 id="commission">KES 0.00</h2>
+          <small>Confirmed referral earnings</small>
+        </article>
+      </section>
+
+      <section class="columns">
+        <div>
+          <section class="panel" id="referrals">
+            <div class="panel-heading">
+              <h2>Your referral centre</h2>
+              <a href="#referrals">Invite friends</a>
+            </div>
+
+            <div class="referral-box">
+              <p>YOUR PERSONAL INVITE LINK</p>
+              <h2>Grow your network</h2>
+              <div class="referral-link">
+                <input id="inviteLink" readonly aria-label="Referral link">
+                <button class="btn btn-white" id="copyLink">Copy link</button>
+              </div>
+              <div class="status" id="copyStatus" aria-live="polite"></div>
+            </div>
+
+            <div class="referral-info">
+              <div class="info-box">
+                <span>Members invited</span>
+                <strong id="membersInvited">0</strong>
+              </div>
+              <div class="info-box">
+                <span>Plans purchased</span>
+                <strong id="plansPurchased">0</strong>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel" id="tasks">
+            <div class="panel-heading">
+              <h2>Available review tasks</h2>
+              <a href="#tasks">View all</a>
+            </div>
+            <div class="empty">
+              <strong>No tasks available yet</strong>
+              Available tasks will appear here after the website backend is connected.
+            </div>
+          </section>
+
+          <section class="panel" id="myreviews">
+            <div class="panel-heading">
+              <h2>My recent reviews</h2>
+              <a href="#myreviews">View history</a>
+            </div>
+            <div class="empty">
+              <strong>No review submissions</strong>
+              Your submitted reviews and approval statuses will appear here.
+            </div>
+          </section>
+        </div>
+
+        <div>
+          <section class="panel" id="wallet">
+            <div class="panel-heading">
+              <h2>My wallet</h2>
+              <span style="font-size:12px;color:#8490a7">KES</span>
+            </div>
+
+            <div class="wallet-balance">
+              <span>Current balance</span>
+              <h2 id="walletBalance">KES 0.00</h2>
+              <div class="wallet-actions">
+                <button class="btn btn-blue" id="depositBtn">Deposit</button>
+                <button class="btn" style="background:white;border:1px solid #e1e6f0" id="withdrawBtn">Withdraw</button>
+              </div>
+            </div>
+
+            <h3 style="font-size:14px;margin-bottom:17px">Pay with M-Pesa</h3>
+            <form class="form" id="paymentForm">
+              <label for="phone">Safaricom phone number</label>
+              <input id="phone" type="tel" placeholder="0712345678" required>
+
+              <label for="plan">Choose a plan</label>
+              <select id="plan">
+                <option value="100">Starter — KES 100</option>
+                <option value="500">Standard — KES 500</option>
+                <option value="1000">Premium — KES 1,000</option>
+              </select>
+
+              <button type="submit" class="btn btn-blue">Continue with M-Pesa</button>
+              <p class="status" id="paymentStatus" aria-live="polite">
+                M-Pesa is not connected. This form does not initiate a real payment.
+              </p>
+            </form>
+          </section>
+
+          <section class="panel" id="transactions">
+            <div class="panel-heading">
+              <h2>Recent activity</h2>
+            </div>
+            <div class="empty">
+              <strong>No transactions yet</strong>
+              Your confirmed payments and withdrawals will appear here.
+            </div>
+          </section>
+
+          <section class="panel" id="help">
+            <div class="panel-heading"><h2>Need assistance?</h2></div>
+            <p style="font-size:13px;line-height:1.8;color:#8490a7">
+              Contact the Skyline support team for help with your account, reviews or payments.
+            </p>
+          </section>
+        </div>
+      </section>
+
+      <section class="panel" id="settings">
+        <div class="panel-heading"><h2>Account settings</h2></div>
+        <p style="font-size:13px;color:#8490a7;line-height:1.7">
+          Profile settings and secure sign-out can be connected when authentication is implemented.
+        </p>
+        <button class="btn btn-blue" id="signOut" style="margin-top:15px">Sign out</button>
+      </section>
+    </main>
+
+    <footer>
+      © <span id="year"></span> Skyline. Member dashboard interface.
+      Real balances and payments require a secure backend.
+    </footer>
+  </div>
+</div>
+
+<script>
+/*
+  SKYLINE FRONTEND STARTER
+
+  This version is a user interface only.
+  It does not save accounts, reviews, referrals or wallet balances.
+  Connect a secure backend and database before public launch.
+*/
+
+const $ = (id) => document.getElementById(id);
+
+// Replace this sample code with a unique referral code from your backend.
+const referralCode = "SKYLINE-DEMO";
+$("inviteLink").value =
+  `${location.origin}/signup.html?ref=${encodeURIComponent(referralCode)}`;
+
+// Date and footer year.
+$("today").textContent = new Date().toLocaleDateString("en-KE", {
+  day: "numeric",
+  month: "short",
+  year: "numeric"
+});
+$("year").textContent = new Date().getFullYear();
+
+// Copy referral link.
+$("copyLink").addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText($("inviteLink").value);
+    $("copyStatus").textContent = "Referral link copied successfully.";
+  } catch (error) {
+    $("inviteLink").select();
+    $("copyStatus").textContent =
+      "Select the link and copy it manually.";
+  }
+});
+
+// M-Pesa placeholder: this deliberately does not call a payment API.
+$("paymentForm").addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const phone = $("phone").value.trim();
+  const amount = $("plan").value;
+
+  if (!/^(?:07|01)\d{8}$/.test(phone)) {
+    $("paymentStatus").textContent =
+      "Enter a valid Kenyan number, such as 0712345678.";
+    return;
+  }
+
+  $("paymentStatus").textContent =
+    `Selected amount: KES ${amount}. M-Pesa integration is not configured yet. ` +
+    "No money has been requested or received.";
+});
+
+// Placeholder actions.
+$("depositBtn").addEventListener("click", () => {
+  $("phone").focus();
+  $("paymentStatus").textContent =
+    "Enter your Safaricom number and select a plan. Real deposits require backend integration.";
+});
+
+$("withdrawBtn").addEventListener("click", () => {
+  alert("Withdrawal requests will be available after a secure backend is connected.");
+});
+
+$("signOut").addEventListener("click", () => {
+  alert("Authentication is not connected yet. Add a secure login system before launch.");
+});
+
+// Basic visual search for dashboard sections.
+$("search").addEventListener("input", (event) => {
+  const query = event.target.value.toLowerCase().trim();
+  document.querySelectorAll(".panel").forEach((panel) => {
+    panel.style.display =
+      !query || panel.innerText.toLowerCase().includes(query) ? "" : "none";
+  });
+});
+</script>
+</body>
+</html>
